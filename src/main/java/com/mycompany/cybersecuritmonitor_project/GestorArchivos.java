@@ -11,10 +11,33 @@ import java.util.ArrayList;
  *
  * @author driss
  */
-public class GestorArchivos {
+public class GestorArchivos extends Thread{
 
-    String ruta;
-
+    String ruta= "";
+    boolean activo=false;
+    
+    public void run(String ruta){
+       crearRegistroCarpeta(ruta);
+       while(true){
+           if(activo){
+               try {
+                   Thread.sleep(2000);
+                   crearComparativa(ruta);
+                   escanearCarpeta();                  
+               } catch (InterruptedException ex) {
+                   System.out.println(ex.getMessage());
+               }
+               
+           }else{
+               try {
+                   Thread.sleep(2000);
+               } catch (InterruptedException ex) {
+                   System.out.println(ex.getMessage());
+               }
+           }
+       }
+    }
+    
     public ArrayList<Archivo> getPrimerGuardado() {
         return primerGuardado;
     }
@@ -26,6 +49,14 @@ public class GestorArchivos {
     ArrayList<Archivo> comparativa = new ArrayList<Archivo>();
     Logger logger = new Logger("log_sdas.txt");
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+    
     public String getRuta() {
         return ruta;
     }
@@ -42,9 +73,10 @@ public class GestorArchivos {
         this.comparativa = comparativa;
     }
     
-    public void crearRegistroCarpeta(File ruta){
-        ArrayList<Archivo> lista = new ArrayList<>();  
-        for (File f : ruta.listFiles()){
+    public void crearRegistroCarpeta(String ruta){
+        ArrayList<Archivo> lista = new ArrayList<>();
+        File carpeta = new File(ruta);
+        for (File f : carpeta.listFiles()){
                 if (f.isDirectory()){
                     System.out.println(f.getName()+ " - Carpeta"); 
                 }else{
@@ -56,9 +88,10 @@ public class GestorArchivos {
         setPrimerGuardado(lista);
     }
     
-    public void crearComparativa(File ruta){
-        ArrayList<Archivo> lista = new ArrayList<>();  
-        for (File f : ruta.listFiles()){
+    public void crearComparativa(String ruta){
+        ArrayList<Archivo> lista = new ArrayList<>(); 
+        File carpeta = new File(ruta);
+        for (File f : carpeta.listFiles()){
                 if (f.isDirectory()){
                     
                 }else{
