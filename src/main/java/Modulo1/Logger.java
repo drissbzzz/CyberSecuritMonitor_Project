@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  */
 
-package com.mycompany.cybersecuritmonitor_project;
+package Modulo1;
 
 import java.io.FileWriter;
 import java.io.IOException;

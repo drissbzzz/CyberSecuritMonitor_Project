@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package com.mycompany.cybersecuritmonitor_project;
+package Modulo1;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,12 +49,8 @@ public class testing {
         gestor.escanearCarpeta();*/
             try {
             // 1️⃣ Carpeta donde trabajamos
-            File carpeta = new File("C:\\Users\\alumno\\Documents\\NetBeansProjects\\CyberSecuritMonitor_Project\\CarpetaPrueba");
+            String carpeta = "C:\\Users\\alumno\\Documents\\NetBeansProjects\\CyberSecuritMonitor_Project\\CarpetaPrueba";
 
-            // Crear la carpeta si no existe
-            if (!carpeta.exists()) {
-                carpeta.mkdirs();
-            }
 
             // 2️⃣ Crear algunos archivos iniciales (guardado primario)
             File archivo1 = new File(carpeta, "archivo1.txt");
