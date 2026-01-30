@@ -79,7 +79,7 @@ public class hiloMaster extends Thread{
             return;
         }else if(map.containsKey(nombre)&&(map.get(hilo.getNombre())>3)){
             cerrarProceso(hilo);
-            log.escribir("[PROCESOS] KILL:"+nombre+" (Persistencia sospechosa)");
+            log.escribir("[PROCESOS] KILL: "+nombre+" (Persistencia sospechosa)");
             actualizarLista(ruta,nombre);
             return;
         }      

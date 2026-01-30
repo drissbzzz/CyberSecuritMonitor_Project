@@ -5,6 +5,7 @@
 package Modulo1;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
@@ -13,10 +14,14 @@ import java.util.ArrayList;
  */
 public class GestorArchivos extends Thread{
 
-    String ruta= "";
+    String ruta;
     boolean activo=false;
     
-    public void run(String ruta){
+    public GestorArchivos(String ruta){
+        this.ruta=ruta;
+    }
+    
+    public void run(){
        crearRegistroCarpeta(ruta);
        while(true){
            if(activo){
@@ -124,8 +129,9 @@ public class GestorArchivos extends Thread{
                 }
                 // Después de comparar con todos los archivos nuevos
                 if (!coincidencia) {
+                    String fecha = LocalDateTime.now().toString();
                     System.out.println(getPrimerGuardado().get(i).getNombre() + " se elimino");
-                    logger.escribir("["+getComparativa().get(i).getFechaEscaneo()+"][INTEGRIDAD] "+getPrimerGuardado().get(i).getNombre()+ " se elimino");
+                    logger.escribir("["+fecha+"][INTEGRIDAD] "+getPrimerGuardado().get(i).getNombre()+ " se elimino");
                 }
             }
             for (int i = 0; i < getComparativa().size(); i++) {
@@ -146,6 +152,7 @@ public class GestorArchivos extends Thread{
                     logger.escribir("["+getComparativa().get(i).getFechaEscaneo()+"][INTEGRIDAD] "+getComparativa().get(i).getNombre()+ " se creo");
                 }
             }
+            setPrimerGuardado(getComparativa());
         } else {
             System.out.println("No se encontró un guardado primario para continuar con el escaneo");
         }
