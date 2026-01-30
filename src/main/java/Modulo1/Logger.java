@@ -16,7 +16,7 @@ public class Logger {
     
     String nombre;
     
-    Logger(String nombreArchivo){
+    public Logger(String nombreArchivo){
         this.nombre = nombreArchivo;
     }   
     public synchronized void escribir(String mensaje) {

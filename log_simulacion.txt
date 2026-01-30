@@ -1,0 +1,4 @@
+[PROCESOS] KILL: keylogger.exe (Lista Negra)
+[PROCESOS] KILL: bitcoin_miner.exe (CPU: 91.0%)
+[PROCESOS] KILL: malware_test.exe (CPU: 51.0%)
+[PROCESOS] KILL:proceso_persistente.exe (Persistencia sospechosa)

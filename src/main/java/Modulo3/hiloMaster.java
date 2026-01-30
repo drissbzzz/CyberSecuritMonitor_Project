@@ -21,17 +21,19 @@ public class hiloMaster extends Thread{
     
     String nombre;
     hiloActor[] monitorizados;
-    String[] listaNegra;
+    ArrayList<String> listaNegra;
+    ArrayList<String> listaBlanca;
     String ruta;
     Logger log;
     HashMap<String, Integer> map = new HashMap<>() ;
     
-    hiloMaster(hiloActor[] arrayhilos, String nombre, Logger log, String lista){
+    public hiloMaster(hiloActor[] arrayhilos, String nombre, Logger log, String negra, String blanca){
         this.monitorizados = arrayhilos;
         this.nombre = nombre;
-        this.ruta=lista;
+        this.ruta=negra;
         this.log = log;
-        this.listaNegra=prepararLista(lista);
+        this.listaNegra=prepararLista(negra);
+        this.listaBlanca=prepararLista(blanca);
     }
     
     public void run() {
@@ -41,15 +43,15 @@ public class hiloMaster extends Thread{
                 Thread.sleep(2000);
                 for (hiloActor h : monitorizados) {
                     int contador;
-                    if (h.isAlive()) {
+                    if (h.isAlive()&&!h.isInterrupted()) {
                         if (map.containsKey(h.getNombre())) {
                             contador = map.get(h.getNombre()) + 1;
                             map.put(h.getNombre(), contador);
                         } else {
                             map.put(h.getNombre(), 1);
                         }
+                        escanearHilo(h);
                     }
-                    escanearHilo(h);
                 }
             } catch (InterruptedException e) {
                 System.out.println("Error");
@@ -63,22 +65,28 @@ public class hiloMaster extends Thread{
     public void escanearHilo(hiloActor hilo){
         double usoCPU = hilo.getUsoCPU();
         String nombre = hilo.getNombre();
-        if(usoCPU>40){
+        if(estaEnLaListaBlanca(hilo.getNombre())){
+            return;
+        }
+        if(estaEnLaListaNegra(hilo.getNombre())){
             cerrarProceso(hilo);
-            log.escribir(" Se ha interrumpido el proceso "+nombre+". Añadido a lista negra");
+            log.escribir("[PROCESOS] KILL: "+nombre+" (Lista Negra)" );
+            return;
+        }else if(usoCPU>40){
+            cerrarProceso(hilo);
+            log.escribir("[PROCESOS] KILL: "+nombre+" (CPU: "+usoCPU+"%)");
             actualizarLista(ruta,nombre);
+            return;
         }else if(map.containsKey(nombre)&&(map.get(hilo.getNombre())>3)){
             cerrarProceso(hilo);
-            log.escribir(" Se ha interrumpido el proceso "+nombre+". Proceso repetiendose constantemente");
+            log.escribir("[PROCESOS] KILL:"+nombre+" (Persistencia sospechosa)");
             actualizarLista(ruta,nombre);
-        }else if(estaEnLaLista(hilo.getNombre())){
-            cerrarProceso(hilo);
-            log.escribir(" Se ha interrumpido el proceso "+nombre+". Está en la lista negra");
-        }
-            
+            return;
+        }      
+          
     }
 
-    private String[] prepararLista(String lista) {
+    private ArrayList<String> prepararLista(String lista) {
         ArrayList<String> listaFormateada = new ArrayList<>();
         try(BufferedReader br = new BufferedReader(new FileReader(lista))){
             String linea;
@@ -94,19 +102,22 @@ public class hiloMaster extends Thread{
         }catch(IOException e){
             System.out.println("Error: "+e.getMessage());
         }
-        return listaFormateada.toArray(new String[0]);
+        return listaFormateada;
     }
     
-    private void actualizarLista(String ruta, String nuevo){
-        try(FileWriter fw = new FileWriter(ruta, true);BufferedWriter bw = new BufferedWriter(fw)){
-            bw.append(","+nuevo+"\n");
-            bw.flush();
-        }catch(IOException e){
-            System.out.println("Error: "+e.getMessage());
+    private void actualizarLista(String ruta, String nuevo) {
+        if (!listaNegra.contains(nuevo)) {
+            listaNegra.add(nuevo);
+            try (FileWriter fw = new FileWriter(ruta, true); BufferedWriter bw = new BufferedWriter(fw)) {
+                bw.append(nuevo+",");
+                bw.flush();
+            } catch (IOException e) {
+                System.out.println("Error: " + e.getMessage());
+            }
         }
     }
     
-    private boolean estaEnLaLista(String nombre){
+    private boolean estaEnLaListaNegra(String nombre){
         boolean si = false;
         for(String sospechoso: listaNegra){
             if(nombre.equals(sospechoso)){
@@ -115,5 +126,13 @@ public class hiloMaster extends Thread{
         }
         return si;
     }
-    
+    private boolean estaEnLaListaBlanca(String nombre){
+        boolean si = false;
+        for(String normal: listaBlanca){
+            if(nombre.equals(normal)){
+                si = true;
+            }           
+        }
+        return si;
+    }  
 }

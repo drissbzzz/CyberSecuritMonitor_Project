@@ -41,10 +41,16 @@ public class hiloActor extends Thread{
     public void run(){
         while(running&&!isInterrupted()){
             try{
-                setUsoCPU(r.nextInt(70)+1);
+                String n = nombre.toLowerCase(); 
+                if (n.contains("keylogger") || n.contains("miner") || n.contains("malware") || n.contains("virus")){
+                    this.usoCPU = r.nextInt(50) + 45; 
+                }else{
+                    this.usoCPU = r.nextInt(30) + 1;
+                } 
                 Thread.sleep(1000);
             }catch(InterruptedException ex){
                 running = false;
+                Thread.currentThread().interrupt();
             }
         }
     }
