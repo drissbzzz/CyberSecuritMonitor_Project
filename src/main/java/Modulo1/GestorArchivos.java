@@ -5,16 +5,44 @@
 package Modulo1;
 
 import java.io.File;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 /**
  *
  * @author driss
  */
-public class GestorArchivos {
+public class GestorArchivos extends Thread{
 
     String ruta;
-
+    boolean activo=false;
+    
+    public GestorArchivos(String ruta){
+        this.ruta=ruta;
+    }
+    
+    public void run(){
+       crearRegistroCarpeta(ruta);
+       while(true){
+           if(activo){
+               try {
+                   Thread.sleep(2000);
+                   crearComparativa(ruta);
+                   escanearCarpeta();                  
+               } catch (InterruptedException ex) {
+                   System.out.println(ex.getMessage());
+               }
+               
+           }else{
+               try {
+                   Thread.sleep(2000);
+               } catch (InterruptedException ex) {
+                   System.out.println(ex.getMessage());
+               }
+           }
+       }
+    }
+    
     public ArrayList<Archivo> getPrimerGuardado() {
         return primerGuardado;
     }
@@ -26,6 +54,14 @@ public class GestorArchivos {
     ArrayList<Archivo> comparativa = new ArrayList<Archivo>();
     Logger logger = new Logger("log_sdas.txt");
 
+    public boolean isActivo() {
+        return activo;
+    }
+
+    public void setActivo(boolean activo) {
+        this.activo = activo;
+    }
+    
     public String getRuta() {
         return ruta;
     }
@@ -42,9 +78,10 @@ public class GestorArchivos {
         this.comparativa = comparativa;
     }
     
-    public void crearRegistroCarpeta(File ruta){
-        ArrayList<Archivo> lista = new ArrayList<>();  
-        for (File f : ruta.listFiles()){
+    public void crearRegistroCarpeta(String ruta){
+        ArrayList<Archivo> lista = new ArrayList<>();
+        File carpeta = new File(ruta);
+        for (File f : carpeta.listFiles()){
                 if (f.isDirectory()){
                     System.out.println(f.getName()+ " - Carpeta"); 
                 }else{
@@ -56,9 +93,10 @@ public class GestorArchivos {
         setPrimerGuardado(lista);
     }
     
-    public void crearComparativa(File ruta){
-        ArrayList<Archivo> lista = new ArrayList<>();  
-        for (File f : ruta.listFiles()){
+    public void crearComparativa(String ruta){
+        ArrayList<Archivo> lista = new ArrayList<>(); 
+        File carpeta = new File(ruta);
+        for (File f : carpeta.listFiles()){
                 if (f.isDirectory()){
                     
                 }else{
@@ -91,8 +129,9 @@ public class GestorArchivos {
                 }
                 // Después de comparar con todos los archivos nuevos
                 if (!coincidencia) {
+                    String fecha = LocalDateTime.now().toString();
                     System.out.println(getPrimerGuardado().get(i).getNombre() + " se elimino");
-                    logger.escribir("["+getComparativa().get(i).getFechaEscaneo()+"][INTEGRIDAD] "+getPrimerGuardado().get(i).getNombre()+ " se elimino");
+                    logger.escribir("["+fecha+"][INTEGRIDAD] "+getPrimerGuardado().get(i).getNombre()+ " se elimino");
                 }
             }
             for (int i = 0; i < getComparativa().size(); i++) {
@@ -113,6 +152,7 @@ public class GestorArchivos {
                     logger.escribir("["+getComparativa().get(i).getFechaEscaneo()+"][INTEGRIDAD] "+getComparativa().get(i).getNombre()+ " se creo");
                 }
             }
+            setPrimerGuardado(getComparativa());
         } else {
             System.out.println("No se encontró un guardado primario para continuar con el escaneo");
         }
