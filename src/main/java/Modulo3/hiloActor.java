@@ -33,7 +33,7 @@ public class hiloActor extends Thread{
     boolean running=true;
     Random r = new Random();
     
-    hiloActor(String nombre){
+    public hiloActor(String nombre){
         this.nombre=nombre;
         this.usoCPU=1.0;
     }
@@ -43,14 +43,14 @@ public class hiloActor extends Thread{
             try{
                 String n = nombre.toLowerCase(); 
                 if (n.contains("keylogger") || n.contains("miner") || n.contains("malware") || n.contains("virus")){
-                    this.usoCPU = r.nextInt(50) + 45; 
+                    this.usoCPU = r.nextInt(50) + 45; //Si el nombre del hilo tiene algo sospechoso, consume mucho CPU
                 }else{
                     this.usoCPU = r.nextInt(30) + 1;
                 } 
                 Thread.sleep(1000);
             }catch(InterruptedException ex){
                 running = false;
-                Thread.currentThread().interrupt();
+                Thread.currentThread().interrupt();//Evitamos errores en caso de que el hiloMaster lo mate
             }
         }
     }

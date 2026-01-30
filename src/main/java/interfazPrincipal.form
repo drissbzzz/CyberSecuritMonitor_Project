@@ -3,9 +3,6 @@
 <Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
-    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-      <Dimension value="[500, 300]"/>
-    </Property>
     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
       <Dimension value="[500, 300]"/>
     </Property>
@@ -83,16 +80,25 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Simulaci&#xf3;n de procesos"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonSimulacionActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botonGestor">
           <Properties>
             <Property name="text" type="java.lang.String" value="Gestor de archivos"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonGestorActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="botonAnalizador">
           <Properties>
             <Property name="text" type="java.lang.String" value="Analizador de tr&#xe1;fico"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="botonAnalizadorActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

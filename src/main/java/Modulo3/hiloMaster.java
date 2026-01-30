@@ -37,13 +37,13 @@ public class hiloMaster extends Thread{
     }
     
     public void run() {
-        System.out.println("Trabajando");
-        while (true) {
+        System.out.println(nombre+" esta listo para salir a cazar");
+        while (true && !isInterrupted()) {
             try {
                 Thread.sleep(2000);
                 for (hiloActor h : monitorizados) {
                     int contador;
-                    if (h.isAlive()&&!h.isInterrupted()) {
+                    if (h.isAlive()&&!h.isInterrupted()) { // con este metodo, cazamos procesos con el mismo nombre y que se repiten mucho sin estar en la lista permitida
                         if (map.containsKey(h.getNombre())) {
                             contador = map.get(h.getNombre()) + 1;
                             map.put(h.getNombre(), contador);

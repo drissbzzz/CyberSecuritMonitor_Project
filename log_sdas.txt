@@ -1,3 +1,0 @@
-[2026-01-30T13:32:12.961608800][INTEGRIDAD] config.txt se modifico
-[2026-01-30T13:32:12.965118200][INTEGRIDAD] usuarios.db se elimino
-[2026-01-30T13:32:12.962113200][INTEGRIDAD] virus.sh se creo

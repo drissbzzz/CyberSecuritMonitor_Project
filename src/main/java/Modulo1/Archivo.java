@@ -19,7 +19,7 @@ public class Archivo {
     LocalDateTime fechaEscaneo;
     Hasher h = new Hasher();
     
-    Archivo (File archivo){       
+    public Archivo (File archivo){       
         setMetadatos(archivo.getAbsolutePath() + archivo.getName() + archivo.length() + archivo.lastModified());
         setNombre(archivo.getName());
         setFechaEscaneo(LocalDateTime.now());

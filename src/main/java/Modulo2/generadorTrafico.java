@@ -39,19 +39,23 @@ public class generadorTrafico {
 
     public void generarDatos(String ruta) {
         DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm:ss");
-        LocalTime tiempoSimulado = LocalTime.of(8, 0, 0);       
+        LocalTime tiempoSimulado = LocalTime.of(8, 0, 0); //Formato de fecha que puso Jose en el log       
          try (BufferedWriter w = new BufferedWriter(new FileWriter(ruta))) {
             for (int i = 1; i <= 200000; i++) {                
                 String port;
                 String ip;
                 int prob = r.nextInt(100)+1;
-                if (prob<=10){
-                    port = ps[r.nextInt(ps.length)];
+                if (prob<=10){ //IP Sospechosa
+                    port = r.nextInt(1024, 49150)+1+"";
                     ip = ipSospechosas[r.nextInt(ipSospechosas.length)];
-                }else if (prob>10&&prob<=20){
+                }else if (prob>10&&prob<=20){//Puerto reservado usado por IP Sospechosa
                     port = r.nextInt(1023)+1+"";
                     ip = ipSospechosas[r.nextInt(ipSospechosas.length)];
-                }else{
+                }else if(prob>20&&prob<=25){// Puerto apuntado en la lista
+                    port = ps[r.nextInt(5)];
+                    ip= r.nextInt(254)+1+"."+r.nextInt(256)+"."+r.nextInt(256)+"."+r.nextInt(256);
+                }
+                else{
                     port = r.nextInt(1024, 49150)+1+"";
                     ip= r.nextInt(254)+1+"."+r.nextInt(256)+"."+r.nextInt(256)+"."+r.nextInt(256);
                 }

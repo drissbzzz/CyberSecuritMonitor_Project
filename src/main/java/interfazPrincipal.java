@@ -5,17 +5,13 @@
 
 /**
  *
- * @author alumno
+ * @author driss
  */
 public class interfazPrincipal extends javax.swing.JFrame {
     
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(interfazPrincipal.class.getName());
-
-    /**
-     * Creates new form interfazPrincipal
-     */
     public interfazPrincipal() {
         initComponents();
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -33,7 +29,6 @@ public class interfazPrincipal extends javax.swing.JFrame {
         botonAnalizador = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMaximumSize(new java.awt.Dimension(500, 300));
         setMinimumSize(new java.awt.Dimension(500, 300));
         setResizable(false);
 
@@ -41,10 +36,25 @@ public class interfazPrincipal extends javax.swing.JFrame {
         background.setMinimumSize(new java.awt.Dimension(500, 300));
 
         botonSimulacion.setText("Simulación de procesos");
+        botonSimulacion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonSimulacionActionPerformed(evt);
+            }
+        });
 
         botonGestor.setText("Gestor de archivos");
+        botonGestor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonGestorActionPerformed(evt);
+            }
+        });
 
         botonAnalizador.setText("Analizador de tráfico");
+        botonAnalizador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonAnalizadorActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
@@ -84,28 +94,28 @@ public class interfazPrincipal extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void botonGestorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonGestorActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        java.awt.EventQueue.invokeLater(() -> new GestorArchivos().setVisible(true));
+    }//GEN-LAST:event_botonGestorActionPerformed
+
+    private void botonAnalizadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonAnalizadorActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        java.awt.EventQueue.invokeLater(() -> new AnalizadorTrafico().setVisible(true));
+    }//GEN-LAST:event_botonAnalizadorActionPerformed
+
+    private void botonSimulacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonSimulacionActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        java.awt.EventQueue.invokeLater(() -> new simuladorViruses().setVisible(true));
+    }//GEN-LAST:event_botonSimulacionActionPerformed
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new interfazPrincipal().setVisible(true));
     }
 
